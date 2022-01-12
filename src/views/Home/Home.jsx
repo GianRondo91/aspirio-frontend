@@ -50,9 +50,7 @@ const Home = () => {
     const updateBook = async () => {
         try {
             let id = book.id;
-            console.log(book);
-           let res = await axios.put(`${apiUrl}/books/${id}`, book);
-            console.log(res);
+            await axios.put(`${apiUrl}/books/${id}`, book);
         } catch (error) {
             console.log(error);
         }
