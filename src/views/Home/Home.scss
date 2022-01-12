@@ -3,4 +3,10 @@
     justify-content: space-between;
     width: 80%;
     margin: auto;
+    .card-title{
+        cursor: pointer;
+        &:hover{
+            color: #198754;
+        }
+    }
 }
