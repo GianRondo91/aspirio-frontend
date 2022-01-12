@@ -13,6 +13,8 @@ import {
 } from 'reactstrap';
 import './Home.scss';
 
+const apiUrl = 'https://aspirio-backend.herokuapp.com/';
+
 const Home = () => {
 
     const [books, setBooks] = useState([]);
@@ -20,7 +22,7 @@ const Home = () => {
     const [infobook, setInfoBook] = useState({});
 
         const getBooks = async () => {
-            let result = await axios.get(`http://localhost:3001/books`);
+            let result = await axios.get(`${apiUrl}/books`);
 
             setBooks(result.data);
         }
@@ -49,7 +51,7 @@ const Home = () => {
         try {
             let id = book.id;
             console.log(book);
-           let res = await axios.put(`http://localhost:3001/books/${id}`, book);
+           let res = await axios.put(`${apiUrl}/books/${id}`, book);
             console.log(res);
         } catch (error) {
             console.log(error);
