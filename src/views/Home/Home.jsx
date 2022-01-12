@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -14,20 +13,19 @@ import {
 } from 'reactstrap';
 import './Home.scss';
 
-const Home = (props) => {
+const Home = () => {
 
-    let history = useHistory();
     const [books, setBooks] = useState([]);
     const [book, setBook] = useState({});
     const [infobook, setInfoBook] = useState({});
 
-    //obtengo datos
-    useEffect(() => {
         const getBooks = async () => {
             let result = await axios.get(`http://localhost:3001/books`);
 
             setBooks(result.data);
         }
+    //obtengo datos
+    useEffect(() => {
         getBooks();
     }, []);
 
@@ -41,6 +39,26 @@ const Home = (props) => {
         toggleInfo();
     }
 
+    const handleState = (event) => {
+        let newBook = { ...book, [event.target.name]: event.target.value };
+        setBook(newBook);
+    };
+
+    //Actualización de los datos
+    const updateBook = async () => {
+        try {
+            let id = book.id;
+            console.log(book);
+           let res = await axios.put(`http://localhost:3001/books/${id}`, book);
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+
+        getBooks();
+    }
+
+    //Mostrar datos
     const getBooksElements = () => {
         return books.map((book) => {
             return <div className="book">
@@ -70,12 +88,10 @@ const Home = (props) => {
 
     // Modal open state
     const [modal, setModal] = React.useState(false);
-    // Modal open state
     const [modalInfo, setModalInfo] = React.useState(false);
 
     // Toggle for Modal
     const toggle = () => setModal(!modal);
-    // Toggle for Modal
     const toggleInfo = () => setModalInfo(!modalInfo);
 
     return (
@@ -88,20 +104,23 @@ const Home = (props) => {
                 isOpen={modal}
                 toggle={toggle}
                 modalTransition={{ timeout: 1000 }}
+                onClosed={updateBook}
             >
                 <ModalHeader toggle={toggle}>
                     <Input
-                        id="title"
-                        name="title"
-                        placeholder={book.name}
-                        type="text" />
+                        id="name"
+                        name="name"
+                        value={book.name}
+                        type="text" 
+                        onChange={handleState}/>
                 </ModalHeader>
                 <ModalBody>
                     <Input
                         id="description"
                         name="description"
-                        placeholder={book.description}
+                        value={book.description}
                         type="textarea"
+                        onChange={handleState}
                     />
                 </ModalBody>
             </Modal>
@@ -122,7 +141,7 @@ const Home = (props) => {
                     {infobook.description}
                 </ModalBody>
             </Modal>
-            
+
             {getBooksElements()}
         </div>
     )
