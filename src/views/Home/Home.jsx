@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import './Home.scss';
 
-const apiUrl = 'https://aspirio-backend.herokuapp.com/';
+const apiUrl = 'https://aspirio-backend.herokuapp.com';
 
 const Home = () => {
 
